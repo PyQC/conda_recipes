@@ -1,0 +1,31 @@
+{% set version = "2.0.3" %}
+
+package:
+  name: libint
+  version: {{ version }}
+
+source:
+  fn: libint-{{ version }}-stable.tgz
+  url: http://downloads.sourceforge.net/project/libint/libint-for-mpqc/libint-{{ version }}-stable.tgz
+
+build:
+  number: 1
+  binary_relocation: true
+  skip: true                                           # [win]
+
+requirements:
+
+test:
+  commands:
+    # Verify library
+    - test -f $PREFIX/lib/libint2$SHLIB_EXT
+    # Inspect linkage
+    - ldd -v $PREFIX/lib/libint2.so       # [linux]
+    - otool -L $PREFIX/lib/libint2.dylib  # [osx]
+    - conda-inspect linkages libint --show-files
+
+about:
+  home: https://github.com/evaleev/libint
+  license: GNU General Public License v2 or later (GPLv2+)
+  summary: "two-body molecular integrals over Gaussian functions library"
+  #readme: README.md

@@ -9,4 +9,3 @@ echo "    Binary:  anaconda.org/pyqc/libint" >> .messages.txt
 #echo "    Test (after first activating conda installation or environment):" >> .messages.txt
 #echo "      psi4 \"\$(dirname \$(which psi4))\"/../share/psi4/samples/mints3/test.in" >> .messages.txt
 echo "" >> .messages.txt
-

@@ -1,7 +1,14 @@
 
-#if [ "$(uname)" == "Darwin" ]; then
-#
-#fi
+if [ "$(uname)" == "Darwin" ]; then
+
+    CXX=clang++
+
+    # configure
+    CFLAGS='-fPIC' CPPFLAGS='-fPIC -stdlib=libc++' ./configure --with-cxx-optflags='-O1' --prefix=${PREFIX} --enable-shared=yes --enable-static=no --with-cxx=${CXX}
+
+    # forcibly link against libc++, rather than libstdc++, as LDFLAGS doesn't work
+    sed -i.bak 's;dynamiclib ;dynamiclib -stdlib=libc++ ;g' libtool
+fi
 
 if [ "$(uname)" == "Linux" ]; then
 
@@ -24,7 +31,6 @@ if [ "$(uname)" == "Linux" ]; then
     # forcibly add static link options, suppress libstdc++ linking, and link against older libc
     sed -i 's;\-lstdc++;;g' libtool
     sed -i 's;shared \\$libobjs ;shared -Wl,--as-needed -static-libstdc++ -static-libgcc -static-intel -wd10237 \\$libobjs /theoryfs2/ds/cdsgroup/psi4-compile/nightly/glibc2.12/lib64/libc.so.6 ;g' libtool
-
 fi
 
 # build
